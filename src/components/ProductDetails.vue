@@ -1,27 +1,17 @@
 <template>
     <div v-if="product">
         <div class="product-container">
-            <!-- Main Swiper for large product images -->
-            <div class="product-images">
-                <swiper :spaceBetween="10" :navigation="true" :thumbs="{ swiper: thumbsSwiper }"
-                    modules="[Thumbs, Navigation, FreeMode]" class="main-swiper">
-                    <swiper-slide v-for="(image, index) in product.images" :key="index">
-                        <img :src="image" alt="Product image" />
-                    </swiper-slide>
-                </swiper>
-                <!-- Thumbnail Swiper -->
-                <swiper @swiper="onSwiper" :spaceBetween="10" :slidesPerView="4.5" :watchSlidesProgress="true"
-                    :grabCursor="true" modules="[Thumbs, Navigation, FreeMode]" class="thumb-swiper">
-                    <swiper-slide v-for="(image, index) in product.images" :key="index">
-                        <img :src="image" alt="Thumbnail image" />
-                    </swiper-slide>
-                </swiper>
+            <div class="product-images"> <swiper-container class="main-swiper" thumbs-swiper=".thumb-swiper"
+                    space-between="10" navigation="true"> <swiper-slide v-for="(image, index) in product.images"
+                        :key="index"> <img :src="image" alt="Product image" /> </swiper-slide> </swiper-container>
+                <swiper-container class="thumb-swiper" space-between="10" slides-per-view="4" free-mode="true"
+                    watch-slides-progress="true"> <swiper-slide v-for="(image, index) in product.images" :key="index">
+                        <img :src="image" alt="Thumbnail image" /> </swiper-slide> </swiper-container>
             </div>
             <div class="product-details">
                 <h1>{{ product.name }}</h1>
                 <p>{{ product.description }}</p>
-                <p>Price: ${{ product.price }}</p>
-                <button @click="addToCart(product)">Add to Cart</button>
+                <p>Price: ${{ product.price }}</p> <button @click="addToCart(product)">Add to Cart</button>
             </div>
         </div>
     </div>
@@ -29,62 +19,26 @@
         <p>Product not found.</p>
     </div>
 </template>
+<script>import { ref, onMounted } from 'vue'; import { useRoute } from 'vue-router'; import { useProductStore } from '../stores/product'; import { useCartStore } from '../stores/cart'; export default { setup() { const productStore = useProductStore(); const cartStore = useCartStore(); const route = useRoute(); const productId = Number(route.params.id); const product = ref(null); const thumbsSwiper = ref(null); const onSwiper = (swiperInstance) => { thumbsSwiper.value = swiperInstance; }; onMounted(async () => { if (productStore.products.length === 0) { await productStore.loadProducts(); } product.value = productStore.getProductById(productId); }); const addToCart = (product) => { cartStore.addToCart(product); }; return { product, addToCart, thumbsSwiper, onSwiper }; } };</script>
 
-<script>
-import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
-import { useProductStore } from '../stores/product';
-import { useCartStore } from '../stores/cart';
-import { Swiper, SwiperSlide } from 'swiper/vue';
-// Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/free-mode';
-import 'swiper/css/navigation';
-import 'swiper/css/thumbs';
 
-export default {
-    components: {
-        Swiper,
-        SwiperSlide,
-    },
-    setup() {
-        const productStore = useProductStore();
-        const cartStore = useCartStore();
-        const route = useRoute();
-        const productId = Number(route.params.id);
-        const product = ref(null);
-        // Reactive reference for the thumbs swiper
-        const thumbsSwiper = ref(null);
-        // Set thumbsSwiper on the thumbnail swiper instance
-        const onSwiper = (swiperInstance) => {
-            thumbsSwiper.value = swiperInstance;
-        };
-        onMounted(async () => {
-            if (productStore.products.length === 0) {
-                await productStore.loadProducts();
-            }
-            product.value = productStore.getProductById(productId);
-        });
-        const addToCart = (product) => {
-            cartStore.addToCart(product);
-        };
-        return { product, addToCart, thumbsSwiper, onSwiper };
-    },
-};
-</script>
 
 <style lang="scss" scoped>
-@import "@/assets/styles/variables.scss";
+@use "sass:color";
+@use "@/assets/styles/variables" as v;
+@use "@/assets/styles/mixins" as m;
 
 .product-container {
     display: flex;
     flex-direction: column;
-    gap: $product-container-gap;
-    padding: $product-container-padding;
+    gap: 24px;
+    /* Replaced v.$spacing-unit * 3 */
+    padding: 24px;
+    /* Replaced v.$spacing-unit * 3 */
     max-width: 1200px;
     margin: 0 auto;
 
-    @media (min-width: 768px) {
+    @include m.respond-to(tablet) {
         flex-direction: row;
         align-items: flex-start;
     }
@@ -92,10 +46,11 @@ export default {
 
 .product-images {
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
+    /* Replaced v.$spacing-unit * 2 */
 
-    @media (min-width: 768px) {
-        width: $product-width;
+    @include m.respond-to(tablet) {
+        width: 60%;
     }
 }
 
@@ -103,14 +58,16 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: left;
-    gap: 10px;
-    background-color: $details-background;
-    padding: 20px;
+    gap: 8px;
+    /* Replaced v.$spacing-unit */
+    background-color: v.$details-background;
+    padding: 16px;
+    /* Replaced v.$spacing-unit * 2 */
     border-radius: 10px;
-    box-shadow: 0 4px 8px $details-box-shadow;
+    box-shadow: 0 4px 8px v.$details-box-shadow;
 
-    @media (min-width: 768px) {
-        width: $details-width;
+    @include m.respond-to(tablet) {
+        width: 40%;
     }
 }
 
@@ -123,9 +80,9 @@ export default {
     border-radius: 10px;
 }
 
-/* Styling for the thumbnail Swiper */
 .thumb-swiper {
-    margin-top: 20px;
+    margin-top: 16px;
+    /* Replaced v.$spacing-unit * 2 */
 }
 
 .thumb-swiper img {
@@ -143,28 +100,52 @@ export default {
 
 h1 {
     font-size: 2em;
-    margin-bottom: 10px;
-    color: #333;
+    margin-bottom: 8px;
+    /* Replaced v.$spacing-unit */
+    color: v.$primary-color;
 }
 
 p {
     text-align: left;
     font-size: 1.1em;
-    color: #555;
+    color: v.$secondary-color;
 }
 
 button {
-    background-color: #ff5722;
+    background-color: v.$primary-color;
     color: white;
     border: none;
     padding: 10px 20px;
+    /* Direct values */
     font-size: 1em;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 
     &:hover {
-        background-color: #e64a19;
+        background-color: color.scale(v.$primary-color, $lightness: -10%);
+    }
+
+    @include m.respond-to(desktop) {
+        padding: 12px 24px;
+        /* Adjust for desktop */
+    }
+}
+
+@include m.respond-to(desktop) {
+    .product-container {
+        padding: 32px;
+        /* Adjust for desktop */
+    }
+
+    .product-details {
+        padding: 24px;
+        /* Adjust for desktop */
+    }
+
+    h1 {
+        font-size: 2.5em;
+        /* Adjust for desktop */
     }
 }
 </style>
