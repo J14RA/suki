@@ -1,22 +1,30 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
-import "./assets/main.css";
 import App from "./App.vue";
 import router from "./router";
 import { register } from "swiper/element/bundle";
+import { useAuthStore } from "./stores/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth"; // Import Firebase Auth
 
 // register Swiper custom elements
 register();
 
-const app = createApp(App);
-
 // Create the Pinia instance
 const pinia = createPinia();
-
-// Use the persistence plugin in Pinia
 pinia.use(piniaPluginPersistedstate);
 
-app.use(pinia);
-app.use(router);
-app.mount("#app");
+let app;
+const auth = getAuth();
+onAuthStateChanged(auth, () => {
+  if (!app) {
+    app = createApp(App);
+    app.use(pinia);
+    app.use(router);
+
+    const authStore = useAuthStore();
+    authStore.fetchUser();
+
+    app.mount("#app");
+  }
+});

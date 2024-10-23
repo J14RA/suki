@@ -28,7 +28,11 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@use "sass:color";
+@use "@/assets/styles/variables" as v;
+@use "@/assets/styles/mixins" as m;
+
 .cart-item {
     display: flex;
     justify-content: space-between;

@@ -5,7 +5,7 @@
             <CartItem v-for="(item, index) in cartItems" :key="index" :item="item" @remove-item="removeFromCart" />
             <p class="total">Total: ${{ totalPrice }}</p>
             <div class="checkout-actions">
-                <button class="checkout-btn" @click="checkout" :disabled="isProcessing">
+                <button class="checkout-btn" @click="handleCheckout" :disabled="isProcessing">
                     {{ isProcessing ? 'Processing...' : 'Proceed to Checkout' }}
                 </button>
             </div>
@@ -13,41 +13,54 @@
         <div v-else>
             <p>Your cart is empty.</p>
         </div>
+        <UserModal :showUserModal="showUserModal" @close="toggleUserModal" />
     </div>
 </template>
 
 <script>
-import { ref, computed } from 'vue';
-import { useCartStore } from '../stores/cart';
-import CartItem from './CartItem.vue';
+import { ref, computed } from "vue";
+import { useCartStore } from "../stores/cart";
+import { useAuthStore } from "../stores/auth";
+import CartItem from "./CartItem.vue";
+import UserModal from "./UserModal.vue"; // Import the UserModal component
 
 export default {
-    components: { CartItem },
+    components: { CartItem, UserModal },
     setup() {
         const cartStore = useCartStore();
-        const isProcessing = ref(false);  // Track checkout process state
+        const authStore = useAuthStore();
+        const isProcessing = ref(false);
+        const showUserModal = ref(false);
 
         const cartItems = computed(() => cartStore.cart);
         const totalPrice = computed(() => cartStore.totalPrice);
 
+        const toggleUserModal = () => {
+            showUserModal.value = !showUserModal.value;
+        };
+
         const removeFromCart = async (itemId) => {
             try {
                 await cartStore.removeFromCart(itemId);
-                alert('Item removed successfully');
+                alert("Item removed successfully");
             } catch (error) {
-                console.error('Error removing item:', error);
-                alert('Failed to remove item. Please try again.');
+                console.error("Error removing item:", error);
+                alert("Failed to remove item. Please try again.");
             }
         };
 
-        const checkout = async () => {
+        const handleCheckout = async () => {
             isProcessing.value = true;
             try {
+                if (!authStore.user) {
+                    toggleUserModal();
+                    return;
+                }
                 await cartStore.clearCart();
-                alert('Order placed successfully!');
+                alert("Order placed successfully!");
             } catch (error) {
-                console.error('Checkout failed:', error);
-                alert('Checkout failed. Please try again.');
+                console.error("Checkout failed:", error);
+                alert("Checkout failed. Please try again.");
             } finally {
                 isProcessing.value = false;
             }
@@ -57,8 +70,10 @@ export default {
             cartItems,
             totalPrice,
             removeFromCart,
-            checkout,
-            isProcessing
+            handleCheckout,
+            isProcessing,
+            showUserModal,
+            toggleUserModal,
         };
     },
 };
