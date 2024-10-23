@@ -1,17 +1,25 @@
 <template>
     <div v-if="product">
         <div class="product-container">
-            <div class="product-images"> <swiper-container class="main-swiper" thumbs-swiper=".thumb-swiper"
-                    space-between="10" navigation="true"> <swiper-slide v-for="(image, index) in product.images"
-                        :key="index"> <img :src="image" alt="Product image" /> </swiper-slide> </swiper-container>
+            <div class="product-images">
+                <swiper-container class="main-swiper" thumbs-swiper=".thumb-swiper" space-between="10"
+                    navigation="true">
+                    <swiper-slide v-for="(image, index) in product.images" :key="index">
+                        <img :src="image" alt="Product image" />
+                    </swiper-slide>
+                </swiper-container>
                 <swiper-container class="thumb-swiper" space-between="10" slides-per-view="4" free-mode="true"
-                    watch-slides-progress="true"> <swiper-slide v-for="(image, index) in product.images" :key="index">
-                        <img :src="image" alt="Thumbnail image" /> </swiper-slide> </swiper-container>
+                    watch-slides-progress="true">
+                    <swiper-slide v-for="(image, index) in product.images" :key="index">
+                        <img :src="image" alt="Thumbnail image" />
+                    </swiper-slide>
+                </swiper-container>
             </div>
             <div class="product-details">
                 <h1>{{ product.name }}</h1>
                 <p>{{ product.description }}</p>
-                <p>Price: ${{ product.price }}</p> <button @click="addToCart(product)">Add to Cart</button>
+                <p>Price: ${{ product.price }}</p>
+                <button @click="addToCart(product)">Add to Cart</button>
             </div>
         </div>
     </div>
@@ -19,9 +27,36 @@
         <p>Product not found.</p>
     </div>
 </template>
-<script>import { ref, onMounted } from 'vue'; import { useRoute } from 'vue-router'; import { useProductStore } from '../stores/product'; import { useCartStore } from '../stores/cart'; export default { setup() { const productStore = useProductStore(); const cartStore = useCartStore(); const route = useRoute(); const productId = Number(route.params.id); const product = ref(null); const thumbsSwiper = ref(null); const onSwiper = (swiperInstance) => { thumbsSwiper.value = swiperInstance; }; onMounted(async () => { if (productStore.products.length === 0) { await productStore.loadProducts(); } product.value = productStore.getProductById(productId); }); const addToCart = (product) => { cartStore.addToCart(product); }; return { product, addToCart, thumbsSwiper, onSwiper }; } };</script>
 
-
+<script>
+import { ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
+import { useProductStore } from "../stores/product";
+import { useCartStore } from "../stores/cart";
+export default {
+    setup() {
+        const productStore = useProductStore();
+        const cartStore = useCartStore();
+        const route = useRoute();
+        const productId = Number(route.params.id);
+        const product = ref(null);
+        const thumbsSwiper = ref(null);
+        const onSwiper = (swiperInstance) => {
+            thumbsSwiper.value = swiperInstance;
+        };
+        onMounted(async () => {
+            if (productStore.products.length === 0) {
+                await productStore.loadProducts();
+            }
+            product.value = productStore.getProductById(productId);
+        });
+        const addToCart = (product) => {
+            cartStore.addToCart(product);
+        };
+        return { product, addToCart, thumbsSwiper, onSwiper };
+    },
+};
+</script>
 
 <style lang="scss" scoped>
 @use "sass:color";
