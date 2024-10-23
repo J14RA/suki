@@ -4,10 +4,10 @@
             <ul>
                 <li><router-link to="/">Home</router-link></li>
                 <li @click="toggleUserModal" class="user-toggle">
-                    <img src="/public/images/square-user-svgrepo-com.svg" alt="User Icon" class="user-icon">
+                    <img src="/images/square-user-svgrepo-com.svg" alt="User Icon" class="user-icon">
                 </li>
                 <li @click="toggleCartSidebar" class="cart-toggle">
-                    <img src="/public/images/cart-shopping-fast-svgrepo-com.svg" alt="Cart Image" class="cart-icon">
+                    <img src="/images/cart-shopping-fast-svgrepo-com.svg" alt="Cart Image" class="cart-icon">
                     <span v-if="cartItemCount > 0" class="cart-count">{{ cartItemCount }}</span>
                 </li>
             </ul>
