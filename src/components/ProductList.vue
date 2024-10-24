@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="product-list">
         <h1>Product List</h1>
         <div v-if="!loading && products.length" class="products-items">
             <div v-for="product in products" :key="product.id" class="product-item">
@@ -20,28 +20,37 @@
 </template>
 
 
+
 <script>
-import { ref, onMounted, computed } from 'vue';
-import { useProductStore } from '../stores/product';
-import { useCartStore } from '../stores/cart';
+import { ref, onMounted, computed } from "vue";
+import { useProductStore } from "../stores/product";
+import { useCartStore } from "../stores/cart";
 
 export default {
     setup() {
         const productStore = useProductStore();
         const cartStore = useCartStore();
-        const loading = ref(true);
+        const loading = ref(true); // Controls loading state
         const products = computed(() => productStore.products);
+
         const addToCart = (product) => {
-            cartStore.addToCart(product);
+            cartStore.addToCart(product); // Add product to cart
         };
 
         onMounted(async () => {
-            await productStore.loadProducts();
-            loading.value = false;
+            try {
+                await productStore.loadProducts();
+                console.log(productStore.products);
+            } catch (error) {
+                console.error("Failed to load products:", error);
+            } finally {
+                loading.value = false;
+            }
         });
 
-        return { products, loading, addToCart };
-    }
+
+        return { products, loading, addToCart }; // Return data and methods to template
+    },
 };
 
 </script>
@@ -52,32 +61,35 @@ export default {
 @use "@/assets/styles/variables" as v;
 @use "@/assets/styles/mixins" as m;
 
+#product-list {
+    padding: 1rem 2rem;
+}
+
 .products-items {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 1.4rem;
     text-decoration: none;
 }
 
 .product-item {
-    flex: 1 1 calc(100% - 40px);
-    /* 100% width minus the gap */
+    flex: 1 1 calc(100% - 2.5rem);
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    max-width: 300px;
+    max-width: 20rem;
     margin: auto;
     text-align: center;
-    padding: 15px;
+    padding: 1rem;
     border-radius: 8px;
-    background-color: #fff;
+    background-color: v.$details-background;
     text-decoration: none;
 
     @include m.respond-to(tablet) {
-        flex: 1 1 calc(50% - 40px);
+        flex: 1 1 calc(50% - 2.5rem);
         /* 2 columns on tablets */
     }
 
     @include m.respond-to(desktop) {
-        flex: 1 1 calc(33.3333% - 40px);
+        flex: 1 1 calc(33.3333% - 2.5rem);
         /* 3 columns on desktops */
     }
 }
@@ -96,33 +108,5 @@ export default {
     height: auto;
     display: block;
     margin-bottom: 10px;
-}
-
-.product-item--cta {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 10px;
-}
-
-.product-item--cta button {
-    padding: 10px 20px;
-    background-color: v.$primary-color;
-    border: none;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s;
-
-    &:hover {
-        background-color: color.scale(v.$primary-color, $lightness: -10%);
-    }
-}
-
-.product-item--cta a {
-    color: white;
-    text-decoration: none;
-
-    &:hover {
-        text-decoration: underline;
-    }
 }
 </style>

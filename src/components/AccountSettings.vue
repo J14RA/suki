@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="account-settings">
         <h1>Account Settings</h1>
         <form @submit.prevent="changePassword">
             <div class="input-field">
@@ -39,7 +39,8 @@ export default {
 
         const changePassword = async () => {
             try {
-                await authStore.changePassword(newPassword.value);
+                // Pass both current and new passwords to changePassword method
+                await authStore.changePassword(currentPassword.value, newPassword.value);
                 alert("Password changed successfully!");
             } catch (error) {
                 console.error("Error changing password:", error.message);
@@ -60,14 +61,24 @@ export default {
             handleLogout,
             showUserModal,
             toggleUserModal,
-            user: computed(() => authStore.user) // Fix: Added missing computed property
+            user: computed(() => authStore.user)
         };
     }
 };
 </script>
 
 <style scoped>
+#account-settings {
+    padding: 1rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .input-field {
+    display: flex;
+    flex-direction: column;
     margin-bottom: 10px;
 }
 

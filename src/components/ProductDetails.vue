@@ -28,11 +28,13 @@
     </div>
 </template>
 
+
 <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watchEffect } from "vue";
 import { useRoute } from "vue-router";
 import { useProductStore } from "../stores/product";
 import { useCartStore } from "../stores/cart";
+
 export default {
     setup() {
         const productStore = useProductStore();
@@ -40,22 +42,30 @@ export default {
         const route = useRoute();
         const productId = Number(route.params.id);
         const product = ref(null);
-        const thumbsSwiper = ref(null);
-        const onSwiper = (swiperInstance) => {
-            thumbsSwiper.value = swiperInstance;
-        };
+
         onMounted(async () => {
+            // If products are not loaded, load them
             if (productStore.products.length === 0) {
                 await productStore.loadProducts();
             }
+
+            // Fetch product by ID from store
             product.value = productStore.getProductById(productId);
         });
+
+        // Watch for changes in products in case they load asynchronously
+        watchEffect(() => {
+            product.value = productStore.getProductById(productId);
+        });
+
         const addToCart = (product) => {
             cartStore.addToCart(product);
         };
-        return { product, addToCart, thumbsSwiper, onSwiper };
+
+        return { product, addToCart };
     },
 };
+
 </script>
 
 <style lang="scss" scoped>
@@ -67,9 +77,7 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 24px;
-    /* Replaced v.$spacing-unit * 3 */
     padding: 24px;
-    /* Replaced v.$spacing-unit * 3 */
     max-width: 1200px;
     margin: 0 auto;
 
@@ -82,7 +90,6 @@ export default {
 .product-images {
     width: 100%;
     margin-bottom: 16px;
-    /* Replaced v.$spacing-unit * 2 */
 
     @include m.respond-to(tablet) {
         width: 60%;
@@ -94,10 +101,8 @@ export default {
     flex-direction: column;
     justify-content: left;
     gap: 8px;
-    /* Replaced v.$spacing-unit */
     background-color: v.$details-background;
     padding: 16px;
-    /* Replaced v.$spacing-unit * 2 */
     border-radius: 10px;
     box-shadow: 0 4px 8px v.$details-box-shadow;
 
@@ -117,7 +122,6 @@ export default {
 
 .thumb-swiper {
     margin-top: 16px;
-    /* Replaced v.$spacing-unit * 2 */
 }
 
 .thumb-swiper img {
@@ -136,7 +140,6 @@ export default {
 h1 {
     font-size: 2em;
     margin-bottom: 8px;
-    /* Replaced v.$spacing-unit */
     color: v.$primary-color;
 }
 
@@ -151,7 +154,6 @@ button {
     color: white;
     border: none;
     padding: 10px 20px;
-    /* Direct values */
     font-size: 1em;
     border-radius: 5px;
     cursor: pointer;
@@ -163,24 +165,20 @@ button {
 
     @include m.respond-to(desktop) {
         padding: 12px 24px;
-        /* Adjust for desktop */
     }
 }
 
 @include m.respond-to(desktop) {
     .product-container {
         padding: 32px;
-        /* Adjust for desktop */
     }
 
     .product-details {
         padding: 24px;
-        /* Adjust for desktop */
     }
 
     h1 {
         font-size: 2.5em;
-        /* Adjust for desktop */
     }
 }
 </style>

@@ -16,7 +16,7 @@
                 </li>
                 <li @click="toggleCartSidebar" class="cart-toggle">
                     <img src="/images/cart-shopping-fast-svgrepo-com.svg" alt="Cart Image" class="cart-icon" />
-                    <span v-if="cartItemCount > 0" class="cart-count">{{ cartItemCount }}</span>
+                    <span v-if="totalCartQuantity > 0" class="cart-count">{{ totalCartQuantity }}</span>
                 </li>
             </ul>
         </nav>
@@ -65,7 +65,7 @@ export default {
             toggleCartSidebar,
             logout,
             user: computed(() => authStore.user),
-            cartItemCount: computed(() => cartStore.cart.length),
+            totalCartQuantity: computed(() => cartStore.totalCartQuantity),
             cartItems: computed(() => cartStore.cart),
             totalPrice: computed(() => cartStore.cart.reduce((sum, item) => sum + item.price * item.quantity, 0)),
             removeFromCart: cartStore.removeFromCart,
@@ -113,9 +113,10 @@ nav {
         display: flex;
         justify-content: center;
         padding: 0;
+        margin: 0;
 
         li {
-            margin: 0 15px;
+            margin: 0 1rem;
             cursor: pointer;
         }
     }
@@ -129,13 +130,14 @@ nav {
 
 /* Cart Toggle */
 .cart-toggle {
+    height: 0;
     position: relative;
 }
 
 .cart-count {
     background-color: red;
     color: white;
-    font-size: 12px;
+    font-size: 0.8rem;
     border-radius: 50%;
     padding: 2px 6px;
     position: absolute;
@@ -146,46 +148,51 @@ nav {
 .user-menu {
     position: relative;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .dropdown {
     position: absolute;
     top: 100%;
-    left: 0;
-    background-color: white;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: v.$details-background;
     border: 1px solid #ddd;
-    padding: 10px;
+    padding: 0.8rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 1000;
     display: flex;
     flex-direction: column;
     gap: 10px;
-}
+    overflow: hidden;
 
-.dropdown p {
-    margin: 0;
-}
+    p {
+        margin: 0;
+    }
 
-.dropdown button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    text-align: left;
-    padding: 5px 0;
-    transition: color 0.3s;
-}
+    button {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        text-align: left;
+        padding: 5px 0;
+        transition: color 0.3s;
 
-.dropdown button:hover {
-    color: red;
-}
+        &:hover {
+            color: red;
+        }
+    }
 
-.dropdown a {
-    text-decoration: none;
-    color: black;
-    transition: color 0.3s;
-}
+    a {
+        text-decoration: none;
+        color: black;
+        transition: color 0.3s;
 
-.dropdown a:hover {
-    color: blue;
+        &:hover {
+            color: blue;
+        }
+    }
 }
 </style>

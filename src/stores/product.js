@@ -6,18 +6,24 @@ export const useProductStore = defineStore("product", {
   }),
   actions: {
     async loadProducts() {
-      const storedProducts = localStorage.getItem("products");
-      if (storedProducts) {
-        this.products = JSON.parse(storedProducts);
-      } else {
-        try {
-          const response = await fetch("/products.json");
-          const products = await response.json();
-          this.products = products;
-          localStorage.setItem("products", JSON.stringify(products));
-        } catch (error) {
-          console.error("Failed to load products:", error);
-        }
+      try {
+        // Clear localStorage to ensure fresh data is fetched
+        localStorage.removeItem("products");
+
+        // Fetch products from the server
+        const response = await fetch("/products.json");
+        if (!response.ok) throw new Error("Failed to fetch products");
+
+        const products = await response.json();
+        this.products = products;
+
+        // Save fetched products to localStorage
+        localStorage.setItem("products", JSON.stringify(products));
+      } catch (error) {
+        console.error("Failed to load products:", error);
+        // Clear localStorage in case of error or corrupted data
+        localStorage.removeItem("products");
+        this.products = []; // Fallback in case of an error
       }
     },
   },

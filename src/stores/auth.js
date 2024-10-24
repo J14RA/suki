@@ -1,4 +1,3 @@
-// src/stores/auth.js
 import { defineStore } from "pinia";
 import { auth } from "../firebase";
 import {
@@ -7,9 +6,10 @@ import {
   signOut,
   onAuthStateChanged,
   updatePassword,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
 } from "firebase/auth";
 
-// src/stores/auth.js
 export const useAuthStore = defineStore("auth", {
   state: () => ({
     user: null,
@@ -52,12 +52,21 @@ export const useAuthStore = defineStore("auth", {
       }
     },
 
-    async changePassword(newPassword) {
-      const user = getAuth().currentUser;
+    async changePassword(currentPassword, newPassword) {
+      const user = auth.currentUser;
       if (user) {
         try {
+          // Re-authenticate user with their current password
+          const credential = EmailAuthProvider.credential(
+            user.email,
+            currentPassword
+          );
+          await reauthenticateWithCredential(user, credential);
+
+          // After successful re-authentication, change password
           await updatePassword(user, newPassword);
         } catch (error) {
+          console.error("Error changing password:", error.message);
           throw new Error(error.message);
         }
       } else {

@@ -4,9 +4,12 @@
         <div class="cart-item-details">
             <p>{{ item.name }} (x{{ item.quantity }})</p>
             <p>Price: ${{ item.price }}</p>
-            <button class="remove-btn" @click="removeItem" aria-label="Remove item">
-                Remove
-            </button>
+            <div class="quantity-controls">
+                <button @click="decreaseQuantity" aria-label="Decrease quantity">-</button>
+                <span>{{ item.quantity }}</span>
+                <button @click="increaseQuantity" aria-label="Increase quantity">+</button>
+            </div>
+            <button class="remove-btn" @click="removeItem" aria-label="Remove item">Remove</button>
         </div>
     </div>
 </template>
@@ -19,10 +22,18 @@ export default {
             required: true
         }
     },
-    emits: ['remove-item'],
+    emits: ['remove-item', 'update-quantity'],
     methods: {
         removeItem() {
             this.$emit('remove-item', this.item.id);
+        },
+        increaseQuantity() {
+            this.$emit('update-quantity', { id: this.item.id, quantity: this.item.quantity + 1 });
+        },
+        decreaseQuantity() {
+            if (this.item.quantity > 1) {
+                this.$emit('update-quantity', { id: this.item.id, quantity: this.item.quantity - 1 });
+            }
         }
     }
 };
@@ -52,6 +63,13 @@ export default {
 .cart-item-details {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .remove-btn {
