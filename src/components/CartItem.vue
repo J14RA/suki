@@ -2,14 +2,14 @@
     <div class="cart-item">
         <img :src="item.images[0]" alt="Product image" class="cart-item-image" />
         <div class="cart-item-details">
-            <p>{{ item.name }} (x{{ item.quantity }})</p>
-            <p>Price: ${{ item.price }}</p>
+            <p class="item-name">{{ item.name }}</p>
+            <p class="item-price">Price: ${{ item.price }}</p>
             <div class="quantity-controls">
-                <button @click="decreaseQuantity" aria-label="Decrease quantity">-</button>
+                <button class="decrease-btn" @click="decreaseQuantity" aria-label="Decrease quantity">-</button>
                 <span>{{ item.quantity }}</span>
-                <button @click="increaseQuantity" aria-label="Increase quantity">+</button>
+                <button class="increase-btn" @click="increaseQuantity" aria-label="Increase quantity">+</button>
+                <button class="remove-btn" @click="removeItem" aria-label="Remove item">Remove</button>
             </div>
-            <button class="remove-btn" @click="removeItem" aria-label="Remove item">Remove</button>
         </div>
     </div>
 </template>
@@ -46,43 +46,127 @@ export default {
 
 .cart-item {
     display: flex;
-    justify-content: space-between;
+    gap: 15px;
+    align-items: center;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    background-color: #fff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    transition: box-shadow 0.2s;
+
+    &:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
 }
 
 .cart-item-image {
     width: 80px;
-    height: auto;
+    height: 80px;
+    object-fit: cover;
     border-radius: 4px;
 }
 
 .cart-item-details {
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: self-end;
+
+    .item-name {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .item-price {
+        color: v.$secondary-color;
+        margin-bottom: 10px;
+    }
+
+    .quantity-controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .increase-btn,
+        .decrease-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            background-color: v.$primary-color;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+
+            &:hover {
+                background-color: color.scale(v.$primary-color, $lightness: -10%);
+            }
+
+            &:disabled {
+                background-color: color.scale(v.$primary-color, $lightness: 20%);
+                cursor: not-allowed;
+            }
+        }
+
+        span {
+            font-size: 1rem;
+            min-width: 24px;
+            text-align: center;
+        }
+
+        .remove-btn {
+            width: auto;
+            height: 30px;
+            align-self: flex-start;
+            padding: 5px 10px;
+            background-color: #e74c3c;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+
+            &:hover {
+                background-color: #c0392b;
+            }
+        }
+    }
 }
 
-.quantity-controls {
-    display: flex;
-    align-items: center;
-    gap: 5px;
+
+
+/* Responsive */
+@mixin respond-to($breakpoint) {
+    @if $breakpoint ==tablet {
+        @media (min-width: 768px) {
+            @content;
+        }
+    }
+
+    @else if $breakpoint ==desktop {
+        @media (min-width: 1024px) {
+            @content;
+        }
+    }
 }
 
-.remove-btn {
-    padding: 5px 10px;
-    background-color: #e74c3c;
-    border: none;
-    color: white;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s;
+@include respond-to(tablet) {
+    .cart-item {
+        flex-direction: row;
+    }
+}
 
-    &:hover {
-        background-color: #c0392b;
+@include respond-to(desktop) {
+    .cart-item {
+        gap: 20px;
+    }
+
+    .cart-item-image {
+        width: 100px;
+        height: 100px;
     }
 }
 </style>

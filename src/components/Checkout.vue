@@ -1,21 +1,25 @@
 <template>
-    <div>
-        <h1>Checkout</h1>
+    <section id="checkout" aria-labelledby="checkout-heading">
+        <h1 id="checkout-heading">Checkout</h1>
+
         <div v-if="cartItems.length" class="cart-items">
-            <CartItem v-for="(item, index) in cartItems" :key="index" :item="item" @remove-item="removeFromCart"
+            <CartItem v-for="(item, index) in cartItems" :key="item.id" :item="item" @remove-item="removeFromCart"
                 @update-quantity="updateItemQuantity" />
-            <p class="total">Total: ${{ totalPrice }}</p>
             <div class="checkout-actions">
-                <button class="checkout-btn" @click="handleCheckout" :disabled="isProcessing">
+                <p class="total">Total: ${{ totalPrice }}</p>
+                <button class="checkout-btn" @click="handleCheckout" :disabled="isProcessing" aria-busy="isProcessing"
+                    :aria-label="isProcessing ? 'Processing your order' : 'Proceed to checkout'">
                     {{ isProcessing ? 'Processing...' : 'Proceed to Checkout' }}
                 </button>
             </div>
         </div>
-        <div v-else>
+
+        <div v-else class="empty-cart">
             <p>Your cart is empty.</p>
         </div>
+
         <UserModal :showUserModal="showUserModal" @close="toggleUserModal" />
-    </div>
+    </section>
 </template>
 
 <script>
@@ -23,7 +27,7 @@ import { ref, computed } from "vue";
 import { useCartStore } from "../stores/cart";
 import { useAuthStore } from "../stores/auth";
 import CartItem from "./CartItem.vue";
-import UserModal from "./UserModal.vue"; // Import the UserModal component
+import UserModal from "./UserModal.vue";
 
 export default {
     components: { CartItem, UserModal },
@@ -89,164 +93,64 @@ export default {
 @use "@/assets/styles/variables" as v;
 @use "@/assets/styles/mixins" as m;
 
-/* Cart Toggle */
-.cart-toggle {
-    position: relative;
-}
-
-.cart-count {
-    background-color: red;
-    color: white;
-    font-size: 12px;
-    border-radius: 50%;
-    padding: 2px 6px;
-    position: absolute;
-    top: -10px;
-    right: -10px;
-}
-
-/* Cart Sidebar Styles */
-.cart-sidebar {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 40%;
-    height: 100%;
-    background-color: #f8f8f8;
-    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
-    padding: 20px;
-    z-index: 100;
-    display: flex;
-    flex-direction: column; // Stack elements vertically
-    overflow: hidden; // Prevent overflowing content
-    transition: transform 0.5s ease;
-    transform: translateX(100%);
-}
-
-.cart-sidebar-open {
-    transform: translateX(0);
-}
-
-.close-btn {
-    background-color: transparent;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-}
-
-/* Transition for sliding the cart */
-.slide-fade-enter-active,
-.slide-fade-leave-active {
-    transition: all 0.5s ease;
-}
-
-.slide-fade-enter,
-.slide-fade-leave-to {
-    transform: translateX(100%);
-    opacity: 0;
-}
-
-/* Cart Items */
-.cart-content {
-    flex-grow: 1; // Allow the content to grow and fill space
-    overflow-y: auto; // Enable scrolling for long content
-    margin-bottom: 20px; // Add spacing before checkout button
-}
-
-.cart-items {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-
-    p {
-        font-weight: bold;
-        text-align: right;
-        margin-top: 10px;
-    }
-
-    a {
-        color: v.$primary-color;
-        text-decoration: none;
-        font-size: 1.2rem;
-    }
-}
-
-.cart-item {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    padding: 10px;
-    border: 1px solid #ddd;
+#checkout {
+    padding: 2rem;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-}
+    max-width: 800px;
+    margin: 0 auto;
 
-.cart-item-image {
-    width: 80px;
-    height: auto;
-    border-radius: 4px;
-}
-
-.cart-item-details {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    p {
-        margin: 5px 0;
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
     }
-}
 
-.remove-btn {
-    align-self: flex-end;
-    padding: 5px 10px;
-    background-color: #e74c3c;
-    border: none;
-    color: white;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-
-    &:hover {
-        background-color: #c0392b;
+    .cart-items {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        background-color: white;
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
-}
 
-/* Total Price */
-.total-price {
-    font-weight: bold;
-    text-align: right;
-    margin-top: 20px;
-}
+    .checkout-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-top: 2rem;
 
-/* Checkout Button */
-.checkout-container {
-    padding-top: 10px;
-    border-top: 1px solid #ddd; // Separate checkout button from items
-    background-color: #fff;
-    display: flex;
-    justify-content: center;
-}
+        .total {
+            font-weight: bold;
+            text-align: right;
+            margin-top: 1rem;
+        }
+    }
 
-.checkout-btn {
-    width: 100%;
-    padding: 10px;
-    background-color: #3498db;
-    border: none;
-    color: white;
-    font-size: 16px;
-    text-align: center;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s;
+    .checkout-btn {
+        width: 100%;
+        padding: 0.75rem 1.5rem;
+        background-color: v.$primary-color;
+        border: none;
+        color: white;
+        font-size: 1.1rem;
+        cursor: pointer;
+        border-radius: 6px;
+        transition: background-color 0.3s, transform 0.1s;
 
-    &:hover {
-        background-color: #2980b9;
+        &:hover {
+            background-color: color.scale(v.$primary-color, $lightness: -10%);
+        }
+
+        &:disabled {
+            background-color: color.scale(v.$primary-color, $lightness: 15%);
+            cursor: not-allowed;
+        }
+    }
+
+    .empty-cart {
+        text-align: center;
+        padding: 2rem;
     }
 }
 </style>
