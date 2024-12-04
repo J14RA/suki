@@ -11,8 +11,8 @@
                 <input type="password" id="newPassword" v-model="newPassword" required />
             </div>
             <button type="submit" class="submit-btn">Change Password</button>
+            <button @click="handleLogout" class="logout-btn">Logout</button>
         </form>
-        <button @click="handleLogout" class="logout-btn">Logout</button>
         <UserModal :showUserModal="showUserModal" @close="toggleUserModal" v-if="!user" />
     </div>
 </template>
@@ -67,7 +67,11 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@use "sass:color";
+@use "@/assets/styles/variables" as *;
+@use "@/assets/styles/mixins" as *;
+
 #account-settings {
     padding: 1rem 2rem;
     display: flex;
@@ -79,24 +83,36 @@ export default {
 .input-field {
     display: flex;
     flex-direction: column;
-    margin-bottom: 10px;
+    gap: 10px;
+    padding: 1rem 0;
+}
+
+.input-field label {
+    text-align: left;
+    font-size: 16px;
+    color: #333;
+}
+
+.input-field input {
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
 }
 
 .submit-btn,
 .logout-btn {
-    display: block;
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #3498db;
-    color: white;
+    width: 100%;
+    padding: 10px;
+    margin: 10px;
+    background-color: $primary-color;
     border: none;
-    cursor: pointer;
+    color: white;
     border-radius: 4px;
     transition: background-color 0.3s;
-}
 
-.submit-btn:hover,
-.logout-btn:hover {
-    background-color: #2980b9;
+    &:hover {
+        background-color: color.scale($primary-color, $lightness: -10%);
+    }
 }
 </style>
