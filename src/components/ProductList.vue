@@ -58,8 +58,8 @@ export default {
 
 <style lang="scss" scoped>
 @use "sass:color";
-@use "@/assets/styles/variables" as v;
-@use "@/assets/styles/mixins" as m;
+@use "@/assets/styles/variables" as *;
+@use "@/assets/styles/mixins" as *;
 
 #product-list {
     padding: 1rem 2rem;
@@ -80,15 +80,15 @@ export default {
     text-align: center;
     padding: 1rem;
     border-radius: 8px;
-    background-color: v.$details-background;
+    background-color: $background-color;
     text-decoration: none;
 
-    @include m.respond-to(tablet) {
+    @include respond-to(tablet) {
         flex: 1 1 calc(50% - 2.5rem);
         /* 2 columns on tablets */
     }
 
-    @include m.respond-to(desktop) {
+    @include respond-to(desktop) {
         flex: 1 1 calc(33.3333% - 2.5rem);
         /* 3 columns on desktops */
     }

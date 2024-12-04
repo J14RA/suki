@@ -1,0 +1,87 @@
+@use "sass:color";
+@use "@/assets/styles/variables" as *;
+@use "@/assets/styles/mixins" as *;
+
+.navbar {
+    background-color: $primary-color;
+    padding: $spacing-medium;
+
+    .navbar-item {
+        color: white;
+        margin: 0 $spacing-small;
+
+        &:hover {
+            color: $secondary-color;
+        }
+    }
+}
+
+.card {
+    border: 1px solid #ddd;
+    padding: $spacing-medium;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    .card-header {
+        font-size: $font-large;
+        margin-bottom: $spacing-small;
+    }
+
+    .card-body {
+        font-size: $font-medium;
+    }
+}
+
+.button {
+    border-radius: 100px;
+    box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset, rgba(44, 187, 99, .15) 0 1px 2px, rgba(44, 187, 99, .15) 0 2px 4px, rgba(44, 187, 99, .15) 0 4px 8px, rgba(44, 187, 99, .15) 0 8px 16px, rgba(44, 187, 99, .15) 0 16px 32px;
+    cursor: pointer;
+    display: inline-block;
+    padding: 7px 20px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 250ms;
+    border: 0;
+    font-size: 16px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+
+    &:hover {
+        box-shadow: rgba(44, 187, 99, .35) 0 -25px 18px -14px inset, rgba(44, 187, 99, .25) 0 1px 2px, rgba(44, 187, 99, .25) 0 2px 4px, rgba(44, 187, 99, .25) 0 4px 8px, rgba(44, 187, 99, .25) 0 8px 16px, rgba(44, 187, 99, .25) 0 16px 32px;
+        transform: scale(1.05) rotate(-1deg);
+    }
+}
+
+/* CSS */
+.button-55 {
+    align-self: center;
+    background-color: #fff;
+    background-image: none;
+    background-position: 0 90%;
+    background-repeat: repeat no-repeat;
+    background-size: 4px 3px;
+    border: 0;
+    box-shadow: rgba(0, 0, 0, .2) 15px 28px 25px -18px;
+    box-sizing: border-box;
+    color: #41403e;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 1.2rem;
+    outline: none;
+    padding: .75rem;
+    text-decoration: none;
+    transition: all 235ms ease-in-out;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+
+    &:hover {
+        box-shadow: rgba(0, 0, 0, .3) 2px 8px 8px -5px;
+        transform: translate3d(0, 2px, 0);
+    }
+
+    &:focus {
+        box-shadow: rgba(0, 0, 0, .3) 2px 8px 4px -6px;
+    }
+}

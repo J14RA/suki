@@ -70,8 +70,8 @@ export default {
 
 <style lang="scss" scoped>
 @use "sass:color";
-@use "@/assets/styles/variables" as v;
-@use "@/assets/styles/mixins" as m;
+@use "@/assets/styles/variables" as *;
+@use "@/assets/styles/mixins" as *;
 
 .product-container {
     display: flex;
@@ -81,7 +81,7 @@ export default {
     max-width: 1200px;
     margin: 0 auto;
 
-    @include m.respond-to(tablet) {
+    @include respond-to(tablet) {
         flex-direction: row;
         align-items: flex-start;
     }
@@ -91,7 +91,7 @@ export default {
     width: 100%;
     margin-bottom: 16px;
 
-    @include m.respond-to(tablet) {
+    @include respond-to(tablet) {
         width: 60%;
     }
 }
@@ -101,12 +101,12 @@ export default {
     flex-direction: column;
     justify-content: left;
     gap: 8px;
-    background-color: v.$details-background;
+    background-color: $background-color;
     padding: 16px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px v.$details-box-shadow;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 
-    @include m.respond-to(tablet) {
+    @include respond-to(tablet) {
         width: 40%;
     }
 }
@@ -140,17 +140,17 @@ export default {
 h1 {
     font-size: 2em;
     margin-bottom: 8px;
-    color: v.$primary-color;
+    color: $primary-color;
 }
 
 p {
     text-align: left;
     font-size: 1.1em;
-    color: v.$secondary-color;
+    color: $secondary-color;
 }
 
 button {
-    background-color: v.$primary-color;
+    background-color: $primary-color;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -160,15 +160,15 @@ button {
     transition: background-color 0.3s ease;
 
     &:hover {
-        background-color: color.scale(v.$primary-color, $lightness: -10%);
+        background-color: color.scale($primary-color, $lightness: -10%);
     }
 
-    @include m.respond-to(desktop) {
+    @include respond-to(desktop) {
         padding: 12px 24px;
     }
 }
 
-@include m.respond-to(desktop) {
+@include respond-to(desktop) {
     .product-container {
         padding: 32px;
     }

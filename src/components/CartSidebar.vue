@@ -1,7 +1,6 @@
 <template>
     <transition name="slide-fade" mode="out-in">
-        <div v-bind:class="{ 'cart-sidebar-open': showCart, 'cart-sidebar': true }" aria-hidden="!showCart"
-            aria-label="Shopping Cart Sidebar">
+        <div v-bind:class="{ 'cart-sidebar-open': showCart, 'cart-sidebar': true }">
             <button class="close-btn" @click="$emit('close')" aria-label="Close Cart Sidebar">X</button>
             <h2>Your Cart</h2>
             <div class="cart-content">

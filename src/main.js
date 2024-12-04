@@ -2,6 +2,7 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import App from "./App.vue";
+import "@/assets/styles/main.scss"; // Import global SCSS
 import router from "./router";
 import { register } from "swiper/element/bundle";
 import { useAuthStore } from "./stores/auth";

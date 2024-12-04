@@ -1,7 +1,10 @@
 <template>
     <header>
         <nav>
-            <router-link to="/">Home</router-link>
+            <div class="logo">
+                <img src="/logo.png" alt="Logo Icon" class="logo-icon" />
+                <router-link to="/">Suki</router-link>
+            </div>
             <ul>
                 <li v-if="!user" @click="toggleUserModal" class="user-toggle">
                     <img src="/images/square-user-svgrepo-com.svg" alt="User Icon" class="user-icon" />
@@ -11,7 +14,7 @@
                     <div v-if="showDropdown" class="dropdown">
                         <p>Welcome, {{ user.email }}</p>
                         <router-link to="/account-settings">Account Settings</router-link>
-                        <button @click="logout">Logout</button>
+                        <button class="button" @click="logout">Logout</button>
                     </div>
                 </li>
                 <li @click="toggleCartSidebar" class="cart-toggle">
@@ -79,11 +82,10 @@ export default {
 
 <style lang="scss" scoped>
 @use "sass:color";
-@use "@/assets/styles/variables" as v;
-@use "@/assets/styles/mixins" as m;
+@use "@/assets/styles/variables" as *;
+@use "@/assets/styles/mixins" as *;
 
 header {
-    font-family: v.$font-stack;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
@@ -92,21 +94,11 @@ header {
 
 /* Navigation Bar Styles */
 nav {
-    background-color: v.$primary-color;
+    background-color: $primary-color;
     padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-
-    a {
-        color: white;
-        text-decoration: none;
-        font-size: 1.2rem;
-
-        &:hover {
-            text-decoration: underline;
-        }
-    }
 
     ul {
         list-style: none;
@@ -119,6 +111,24 @@ nav {
             margin: 0 1rem;
             cursor: pointer;
         }
+    }
+}
+
+/*Logo */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    &-icon {
+        width: 2rem
+    }
+
+    a {
+        font-family: monospace;
+        text-decoration: none;
+        color: white;
+        font-size: 2rem;
     }
 }
 
@@ -158,7 +168,7 @@ nav {
     top: 100%;
     left: 50%;
     transform: translateX(-50%);
-    background-color: v.$details-background;
+    background-color: $background-color;
     border: 1px solid #ddd;
     padding: 0.8rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -170,19 +180,6 @@ nav {
 
     p {
         margin: 0;
-    }
-
-    button {
-        background-color: transparent;
-        border: none;
-        cursor: pointer;
-        text-align: left;
-        padding: 5px 0;
-        transition: color 0.3s;
-
-        &:hover {
-            color: red;
-        }
     }
 
     a {

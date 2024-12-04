@@ -1,12 +1,19 @@
 /* src/assets/styles/variables.scss */
-$primary-color: #f5af5a;
-$secondary-color: #515779;
-$font-stack: 'Avenir', Helvetica, Arial, sans-serif;
-$details-background: #f9f9f9;
-$details-box-shadow: rgba(0, 0, 0, 0.1);
-$product-width: 60%;
-$details-width: 40%;
-$product-container-padding: 24px;
-$product-container-gap: 24px;
+@use "sass:color";
 
-/* Add other variables as needed */
+
+// Colors
+$primary-color: #3498db;
+$secondary-color: #2ecc71;
+$text-color: #333333;
+$background-color: #f9f9f9;
+
+// Spacing
+$spacing-small: 8px;
+$spacing-medium: 16px;
+$spacing-large: 24px;
+
+// Font sizes
+$font-small: 14px;
+$font-medium: 16px;
+$font-large: 24px;

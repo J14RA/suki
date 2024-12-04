@@ -1,0 +1,28 @@
+/* Reset */
+@use "sass:color";
+@use "@/assets/styles/variables" as *;
+@use "@/assets/styles/mixins" as *;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    font-family: Arial, sans-serif;
+    background-color: $background-color;
+    color: $text-color;
+    line-height: 1.5;
+    font-size: $font-medium;
+}
+
+a {
+    color: $primary-color;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}

@@ -19,11 +19,8 @@ export default defineConfig({
   },
   css: {
     preprocessorOptions: {
-      css: {
-        additionalData: `@import 'swiper/swiper-bundle.min.css';`,
-      },
       scss: {
-        api: "modern-compiler",
+        api: "modern-compiler", // or "modern"
       },
     },
   },

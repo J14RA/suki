@@ -6,28 +6,68 @@
                 <form @submit.prevent="handleSubmit">
                     <div class="input-field">
                         <label>Email</label>
-                        <input type="email" v-model="email" required />
+                        <input type="email" v-model="email" required placeholder="Enter your email" />
                         <p v-if="errors.email" class="error-message">{{ errors.email }}</p>
                     </div>
                     <div class="input-field">
                         <label>Password</label>
-                        <input type="password" v-model="password" required />
-                        <p v-if="errors.password" class="error-message">{{ errors.password }}</p>
+                        <div class="password-container">
+                            <input :type="showPassword ? 'text' : 'password'" v-model="password" required
+                                placeholder="Enter your password" />
+                            <button type="button" class="toggle-password" @click="togglePasswordVisibility">
+                                <img :src="showPassword
+                                    ? '/images/eye-svgrepo-com.svg'
+                                    : '/images/eye-off-svgrepo-com.svg'
+                                    " :alt="showPassword ? 'Hide Icon' : 'Show Icon'"
+                                    class="password-container__icon" />
+                            </button>
+                        </div>
+                        <p v-if="errors.password" class="error-message">
+                            {{ errors.password }}
+                        </p>
                     </div>
                     <div v-if="isRegister" class="input-field">
                         <label>Confirm Password</label>
-                        <input type="password" v-model="confirmPassword" required />
-                        <p v-if="errors.confirmPassword" class="error-message">{{ errors.confirmPassword }}</p>
+                        <div class="password-container">
+                            <input :type="showConfirmPassword ? 'text' : 'password'" v-model="confirmPassword" required
+                                placeholder="Confirm your password" />
+                            <button type="button" class="toggle-password" @click="toggleConfirmPasswordVisibility">
+                                <img :src="showConfirmPassword
+                                    ? '/images/eye-svgrepo-com.svg'
+                                    : '/images/eye-off-svgrepo-com.svg'
+                                    " :alt="showConfirmPassword ? 'Hide Icon' : 'Show Icon'"
+                                    class="password-container__icon" />
+                            </button>
+                        </div>
+                        <p v-if="errors.confirmPassword" class="error-message">
+                            {{ errors.confirmPassword }}
+                        </p>
                     </div>
-                    <button type="submit" class="submit-btn" :disabled="authStore.loading">
-                        {{ authStore.loading ? "Processing..." : isRegister ? "Register" : "Login" }}
+                    <button type="submit" class="submit-btn button-55" :disabled="authStore.loading">
+                        {{
+                            authStore.loading
+                                ? "Processing..."
+                                : isRegister
+                                    ? "Register" : "Login"
+                        }}
                     </button>
                 </form>
-                <button class="close-btn" @click="$emit('close')">Close</button>
-                <p @click="toggleAuthMode">
-                    {{ isRegister ? "Already have an account? Login" : "Don't have an account? Register" }}
+                <p>{{
+                    isRegister
+                        ? "Already have an account?"
+                        : "Don't have an account?"
+                }}
+                    <a @click="toggleAuthMode">
+                        {{
+                            isRegister
+                                ? "Login"
+                                : "Register"
+                        }}
+                    </a>
                 </p>
-                <p v-if="authStore.error" class="error-message">{{ authStore.error }}</p>
+                <p v-if="authStore.error" class="error-message">
+                    {{ authStore.error }}
+                </p>
             </div>
         </div>
     </transition>
@@ -48,7 +88,17 @@ export default {
         const email = ref("");
         const password = ref("");
         const confirmPassword = ref("");
+        const showPassword = ref(false); // State to toggle password visibility
+        const showConfirmPassword = ref(false); // State for confirm password visibility
         const errors = ref({ email: "", password: "", confirmPassword: "" });
+
+        const togglePasswordVisibility = () => {
+            showPassword.value = !showPassword.value;
+        };
+
+        const toggleConfirmPasswordVisibility = () => {
+            showConfirmPassword.value = !showConfirmPassword.value;
+        };
 
         const toggleAuthMode = () => {
             isRegister.value = !isRegister.value;
@@ -58,9 +108,16 @@ export default {
             errors.value.email = email.value ? "" : "Email is required";
             errors.value.password = password.value ? "" : "Password is required";
             if (isRegister.value) {
-                errors.value.confirmPassword = password.value === confirmPassword.value ? "" : "Passwords do not match";
+                errors.value.confirmPassword =
+                    password.value === confirmPassword.value
+                        ? ""
+                        : "Passwords do not match";
             }
-            return !errors.value.email && !errors.value.password && (!isRegister.value || !errors.value.confirmPassword);
+            return (
+                !errors.value.email &&
+                !errors.value.password &&
+                (!isRegister.value || !errors.value.confirmPassword)
+            );
         };
 
         const handleSubmit = async () => {
@@ -82,7 +139,11 @@ export default {
             email,
             password,
             confirmPassword,
+            showPassword,
+            showConfirmPassword,
             errors,
+            togglePasswordVisibility,
+            toggleConfirmPasswordVisibility,
             toggleAuthMode,
             handleSubmit,
         };
@@ -90,11 +151,10 @@ export default {
 };
 </script>
 
-
 <style lang="scss" scoped>
 @use "sass:color";
-@use "@/assets/styles/variables" as v;
-@use "@/assets/styles/mixins" as m;
+@use "@/assets/styles/variables" as *;
+@use "@/assets/styles/mixins" as *;
 
 .modal {
     position: fixed;
@@ -116,6 +176,10 @@ export default {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     cursor: default;
+
+    p {
+        padding: 1rem
+    }
 }
 
 .fade-enter-active,
@@ -144,47 +208,61 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    padding: 1rem 0;
 }
 
 .input-field label {
+    text-align: left;
     font-size: 16px;
     color: #333;
 }
 
 .input-field input {
-    padding: 10px;
+    padding: 1rem;
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 16px;
 }
 
-.submit-btn {
-    padding: 10px;
-    background-color: v.$primary-color;
-    border: none;
-    color: white;
-    cursor: pointer;
-    font-size: 16px;
-    border-radius: 4px;
-    transition: background-color 0.3s;
+.password-container {
+    display: flex;
+    align-items: center;
+    position: relative;
 
-    &:hover {
-        background-color: color.scale(v.$primary-color, $lightness: -10%);
+    &__icon {
+        width: 2rem;
+    }
+
+    input {
+        flex: 1;
+    }
+
+    .toggle-password {
+        background: none;
+        border: none;
+        color: $primary-color;
+        cursor: pointer;
+        font-size: 14px;
+        margin-left: 10px;
+        padding: 5px;
+
+        &:hover {
+            color: color.scale($primary-color, $lightness: -10%);
+        }
     }
 }
 
-.close-btn {
-    align-self: flex-end;
-    padding: 5px 10px;
-    background-color: #e74c3c;
+.submit-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: $primary-color;
     border: none;
     color: white;
-    cursor: pointer;
     border-radius: 4px;
     transition: background-color 0.3s;
 
     &:hover {
-        background-color: #c0392b;
+        background-color: color.scale($primary-color, $lightness: -10%);
     }
 }
 </style>
