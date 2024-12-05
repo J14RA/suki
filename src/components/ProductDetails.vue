@@ -129,12 +129,8 @@ export default {
     border-radius: 5px;
 }
 
-.thumb-swiper .swiper-slide {
-    opacity: 0.5;
-}
-
 .thumb-swiper .swiper-slide-thumb-active {
-    opacity: 1;
+    opacity: 0.5;
 }
 
 h1 {

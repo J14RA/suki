@@ -11,7 +11,9 @@ export const useProductStore = defineStore("product", {
         localStorage.removeItem("products");
 
         // Fetch products from the server
-        const response = await fetch("/products.json");
+        const response = await fetch(
+          "https://api.escuelajs.co/api/v1/products/?categoryId=3"
+        );
         if (!response.ok) throw new Error("Failed to fetch products");
 
         const products = await response.json();
