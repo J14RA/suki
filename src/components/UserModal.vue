@@ -25,6 +25,9 @@
                         <p v-if="errors.password" class="error-message">
                             {{ errors.password }}
                         </p>
+                        <router-link v-if="!isRegister" to="/reset-password" @click="$emit('close')"
+                            class="reset">Forgot your
+                            password?</router-link>
                     </div>
                     <div v-if="isRegister" class="input-field">
                         <label>Confirm Password</label>
@@ -222,6 +225,10 @@ export default {
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 16px;
+}
+
+.reset {
+    text-align: left;
 }
 
 .password-container {

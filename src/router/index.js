@@ -5,6 +5,7 @@ import ProductList from "../components/ProductList.vue";
 import Checkout from "../components/Checkout.vue";
 import ProductDetails from "../components/ProductDetails.vue";
 import AccountSettings from "../components/AccountSettings.vue";
+import ResetPassword from "../components/ResetPassword.vue";
 import { getAuth } from "firebase/auth"; // Import Firebase Auth
 
 const routes = [
@@ -16,6 +17,11 @@ const routes = [
     name: "AccountSettings",
     component: AccountSettings,
     meta: { requiresAuth: true },
+  },
+  {
+    path: "/reset-password",
+    name: "ResetPassword",
+    component: ResetPassword,
   },
 ];
 

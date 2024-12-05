@@ -8,6 +8,7 @@ import {
   updatePassword,
   reauthenticateWithCredential,
   EmailAuthProvider,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 
 export const useAuthStore = defineStore("auth", {
@@ -71,6 +72,19 @@ export const useAuthStore = defineStore("auth", {
         }
       } else {
         throw new Error("No user is signed in.");
+      }
+    },
+
+    async resetPassword(email) {
+      this.loading = true;
+      try {
+        await sendPasswordResetEmail(auth, email);
+        return "A password reset link has been sent to your email.";
+      } catch (error) {
+        console.error("Error sending password reset email:", error.message);
+        throw new Error(error.message);
+      } finally {
+        this.loading = false;
       }
     },
 
