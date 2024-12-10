@@ -2,11 +2,13 @@
     <div id="product-list">
         <h1>Product List</h1>
         <div v-if="!loading && products.length" class="products-items">
-            <div v-for="product in products" :key="product.id" class="product-item">
+            <div v-for="product in products" :key="product.id" class="product-item card">
                 <router-link :to="`/product/${product.id}`" class="product-link">
                     <img :src="product.images[0]" alt="Product image" class="product-image" />
-                    <h3>{{ product.title }}</h3>
-                    <p>Price: ${{ product.price }}</p>
+                    <div class="product-tag">
+                        <h4>{{ product.title }}</h4>
+                        <p>Price: ${{ product.price }}</p>
+                    </div>
                 </router-link>
             </div>
         </div>
@@ -108,5 +110,27 @@ export default {
     height: auto;
     display: block;
     margin-bottom: 10px;
+}
+
+.product-tag {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    h4 {
+        text-align: left;
+        white-space: nowrap;
+        /* Prevent the text from wrapping to the next line */
+        overflow: hidden;
+        /* Hide the overflowing text */
+        text-overflow: ellipsis;
+        /* Add the ellipsis (...) */
+        width: 100%;
+        /* Ensure the width is respected for truncation */
+    }
+
+    p {
+        text-align: right;
+    }
 }
 </style>

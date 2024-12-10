@@ -16,9 +16,9 @@
                 </swiper-container>
             </div>
             <div class="product-details">
-                <h1>{{ product.name }}</h1>
+                <h2>{{ product.title }}</h2>
+                <h3>Price: ${{ product.price }}</h3>
                 <p>{{ product.description }}</p>
-                <p>Price: ${{ product.price }}</p>
                 <button @click="addToCart(product)">Add to Cart</button>
             </div>
         </div>
