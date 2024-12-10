@@ -186,7 +186,7 @@ nav {
   color: white;
   font-size: 0.8rem;
   border-radius: 50%;
-  padding: 2px 6px;
+  padding: 0 6px;
   position: absolute;
   top: -10px;
   right: -10px;
@@ -205,10 +205,14 @@ nav {
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
-  background-color: $background-color;
-  border: 1px solid #ddd;
+  background-color: color.scale($background-color, $alpha: 20%);
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   padding: 0.8rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   display: flex;
   flex-direction: column;

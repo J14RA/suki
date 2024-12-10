@@ -94,26 +94,24 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: self-end;
+  text-align: left;
 
   .item-name {
-    text-align: left;
     font-weight: bold;
-    margin-bottom: 5px;
   }
 
   .item-price {
     color: v.$secondary-color;
-    margin-bottom: 10px;
   }
 
   .quantity-controls {
     display: flex;
     align-items: center;
-    gap: 10px;
-
+    justify-content: space-between;
     .quantity-controls_adjust {
       display: flex;
+      align-items: center;
+      gap: 3px;
 
       .increase-btn,
       .decrease-btn {
@@ -123,7 +121,7 @@ export default {
         background-color: v.$primary-color;
         border: none;
         color: white;
-        font-size: 1.2rem;
+        font-size: 1rem;
         cursor: pointer;
         transition: background-color 0.3s;
 
@@ -135,6 +133,9 @@ export default {
           background-color: color.scale(v.$primary-color, $lightness: 20%);
           cursor: not-allowed;
         }
+      }
+      span {
+        font-size: 1rem;
       }
     }
 

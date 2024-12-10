@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "title": "Product 1",
+    "title": "Product number 1",
     "description": "Details of Product 1 Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tempor nibh at vestibulum euismod. Cras sed ligula vel libero scelerisque vehicula at in mi. Sed congue condimentum quam ac fermentum.",
     "price": 50,
     "images": [
