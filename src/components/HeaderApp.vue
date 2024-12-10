@@ -141,8 +141,6 @@ nav {
     list-style: none;
     display: flex;
     justify-content: center;
-    padding: 0;
-    margin: 0;
 
     li {
       margin: 0 1rem;

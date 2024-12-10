@@ -102,7 +102,6 @@ export default {
 .cart-content {
   flex-grow: 1;
   overflow-y: auto;
-  padding-right: 10px;
 }
 
 .total-price {
@@ -114,9 +113,6 @@ export default {
 .checkout-container {
   padding-top: 10px;
   border-top: 1px solid #ddd;
-  background-color: #fff;
-  display: flex;
-  justify-content: center;
 }
 
 .checkout-btn {
@@ -125,7 +121,7 @@ export default {
   background-color: #3498db;
   border: none;
   color: white;
-  font-size: 16px;
+  font-size: 1rem;
   text-align: center;
   cursor: pointer;
   border-radius: 4px;
