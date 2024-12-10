@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "name": "Product 1",
+    "title": "Product 1",
     "description": "Details of Product 1 Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tempor nibh at vestibulum euismod. Cras sed ligula vel libero scelerisque vehicula at in mi. Sed congue condimentum quam ac fermentum.",
     "price": 50,
     "images": [
@@ -13,7 +13,7 @@
   },
   {
     "id": 2,
-    "name": "Product 2",
+    "title": "Product 2",
     "description": "Details of Product 2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tempor nibh at vestibulum euismod. Cras sed ligula vel libero scelerisque vehicula at in mi. Sed congue condimentum quam ac fermentum.",
     "price": 75,
     "images": [
@@ -25,7 +25,7 @@
   },
   {
     "id": 3,
-    "name": "Product 3",
+    "title": "Product 3",
     "description": "Details of Product 3 Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tempor nibh at vestibulum euismod. Cras sed ligula vel libero scelerisque vehicula at in mi. Sed congue condimentum quam ac fermentum.",
     "price": 60,
     "images": [
@@ -37,7 +37,7 @@
   },
   {
     "id": 4,
-    "name": "Product 4",
+    "title": "Product 4",
     "description": "Details of Product 4 Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tempor nibh at vestibulum euismod. Cras sed ligula vel libero scelerisque vehicula at in mi. Sed congue condimentum quam ac fermentum.",
     "price": 90,
     "images": [
