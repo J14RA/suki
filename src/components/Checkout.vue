@@ -83,7 +83,7 @@ export default {
       try {
         if (!authStore.user) {
           toggleUserModal();
-          return { handleLoginSuccess };
+          return;
         }
         await cartStore.clearCart();
         alert("Order placed successfully!");

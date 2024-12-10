@@ -118,14 +118,15 @@ export default {
   props: {
     showUserModal: Boolean,
   },
-  setup() {
+  setup(props, { emit }) {
+    // Destructure emit from the second argument
     const authStore = useAuthStore();
     const isRegister = ref(false);
     const email = ref("");
     const password = ref("");
     const confirmPassword = ref("");
-    const showPassword = ref(false); // State to toggle password visibility
-    const showConfirmPassword = ref(false); // State for confirm password visibility
+    const showPassword = ref(false);
+    const showConfirmPassword = ref(false);
     const errors = ref({ email: "", password: "", confirmPassword: "" });
 
     const togglePasswordVisibility = () => {
@@ -163,6 +164,7 @@ export default {
           await authStore.register(email.value, password.value);
         } else {
           await authStore.login(email.value, password.value);
+          emit("login-success"); // Emit the event here
         }
       } catch (error) {
         console.error("Authentication error: ", error.message);
