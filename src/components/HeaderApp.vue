@@ -83,6 +83,7 @@ export default {
     };
     const handleLoginSuccess = () => {
       showUserModal.value = false;
+      console.log("is working");
     };
 
     const toggleCartSidebar = () => {

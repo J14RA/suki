@@ -30,6 +30,7 @@
     </div>
 
     <UserModal
+      v-if="!user"
       :showUserModal="showUserModal"
       @close="toggleUserModal"
       @login-success="handleLoginSuccess"
@@ -62,6 +63,7 @@ export default {
 
     const handleLoginSuccess = () => {
       showUserModal.value = false;
+      console.log("is working");
     };
 
     const removeFromCart = async (itemId) => {
@@ -101,6 +103,7 @@ export default {
       removeFromCart,
       updateItemQuantity,
       handleCheckout,
+      user: computed(() => authStore.user),
       isProcessing,
       showUserModal,
       toggleUserModal,

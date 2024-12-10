@@ -164,7 +164,6 @@ export default {
           await authStore.register(email.value, password.value);
         } else {
           await authStore.login(email.value, password.value);
-          emit("login-success"); // Emit the event here
         }
       } catch (error) {
         console.error("Authentication error: ", error.message);
