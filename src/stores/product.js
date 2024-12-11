@@ -3,37 +3,34 @@ import { defineStore } from "pinia";
 export const useProductStore = defineStore("product", {
   state: () => ({
     products: [],
+    isLoading: false,
   }),
   actions: {
     async loadProducts() {
       try {
-        // Clear localStorage to ensure fresh data is fetched
-        localStorage.removeItem("products");
-
-        // // Fetch products from the server
-        // const response = await fetch(
-        //   "https://api.escuelajs.co/api/v1/products/?categoryId=3"
-        // );
-
-        //if not the api not working
-        const response = await fetch("/products.json");
+        console.log("Fetching products...");
+        const response = await fetch(
+          "https://dummyjson.com/products/search?q=phone"
+        );
         if (!response.ok) throw new Error("Failed to fetch products");
 
-        const products = await response.json();
-        this.products = products;
-
-        // Save fetched products to localStorage
-        localStorage.setItem("products", JSON.stringify(products));
+        const data = await response.json();
+        console.log("Fetched data:", data);
+        this.products = data.products;
+        localStorage.setItem("products", JSON.stringify(data.products));
       } catch (error) {
         console.error("Failed to load products:", error);
-        // Clear localStorage in case of error or corrupted data
-        localStorage.removeItem("products");
-        this.products = []; // Fallback in case of an error
+        this.products = [];
       }
     },
   },
   getters: {
     getProductById: (state) => (id) =>
       state.products.find((product) => product.id === id),
+    getCategories: (state) => {
+      return [
+        ...new Set(state.products.map((product) => product.category?.name)),
+      ];
+    },
   },
 });

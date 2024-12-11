@@ -43,6 +43,7 @@ export default {
 
     const addToCart = (product) => {
       cartStore.addToCart(product); // Add product to cart
+      console.log(productStore.products);
     };
 
     onMounted(async () => {
@@ -86,35 +87,30 @@ export default {
   border-radius: 8px;
   background-color: $background-color;
   text-decoration: none;
-
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; // Ensures content is spaced evenly
   @include respond-to(tablet) {
     flex: 1 1 calc(50% - 2.5rem);
-    /* 2 columns on tablets */
   }
 
   @include respond-to(desktop) {
     flex: 1 1 calc(33.3333% - 2.5rem);
-    /* 3 columns on desktops */
-  }
-}
-
-.product-link {
-  color: inherit;
-  text-decoration: none;
-
-  &:hover {
-    text-decoration: underline;
   }
 }
 
 .product-image {
   width: 100%;
-  height: auto;
+  height: 15rem; // Define fixed height
+  object-fit: contain;
   display: block;
+  border-radius: 8px;
   margin-bottom: 10px;
+  aspect-ratio: 4 / 3; // Maintain a consistent ratio
 }
 
 .product-tag {
+  flex-grow: 1; // Take up available space
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -122,17 +118,14 @@ export default {
   h4 {
     text-align: left;
     white-space: nowrap;
-    /* Prevent the text from wrapping to the next line */
     overflow: hidden;
-    /* Hide the overflowing text */
     text-overflow: ellipsis;
-    /* Add the ellipsis (...) */
     width: 100%;
-    /* Ensure the width is respected for truncation */
   }
 
   p {
     text-align: right;
+    margin-top: auto; // Push the price to the bottom
   }
 }
 </style>
